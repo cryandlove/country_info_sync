@@ -180,12 +180,16 @@ flutter build ios --release
 flutter build web --release
 
 ## 💻 Development Environment
+This project is developed and tested on:
 
-This project is actively developed and tested using:
-- **OS**: macOS (Apple Silicon)
-- **IDE**: VS Code / Android Studio
-- **iOS/macOS Build Toolchain**: Xcode 14+
-- **Flutter Framework**: Flutter 3.13+
+* Hardware: MacBook Pro (Apple M3 Pro)
+* OS: macOS 27.0.1
+* IDE: VS Code / Android Studio
+* Xcode: Xcode 27.0
+* Flutter: Flutter 3.47.2 • channel stable • https://github.com/flutter/flutter.git
+
+## 📋 Requirements
+* Dart SDK: ^3.13.2
 
 ## 🙏 Credits & Attribution
 
