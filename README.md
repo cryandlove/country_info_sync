@@ -1,12 +1,36 @@
-# <img src="assets/images/logo-128.png" width="36" height="36" align="absmiddle" alt="Country Info Sync Logo"> Country Info Sync
+<p align="center">
+  <a href="https://github.com/moradzadeh67/country_info_sync">
+    <img src="assets/images/logo-256.png" width="128" height="128" alt="Country Info Sync Logo">
+  </a>
+</p>
 
-A professional, offline-first Flutter application for exploring global country information — with live API data, Wikipedia summaries, and a curated list of UNESCO heritage sites.
+<h1 align="center">Country Info Sync</h1>
 
-[![Latest Release](https://img.shields.io/github/v/release/moradzadeh67/country_info_sync?style=flat-square&color=green)](https://github.com/moradzadeh67/country_info_sync/releases/latest)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20macOS%20%7C%20Web-blue?style=flat-square)]()
+<p align="center">
+  <b>A professional, offline-first Flutter application for exploring global country information — with live API data, Wikipedia summaries, and a curated list of UNESCO heritage sites.</b>
+</p>
 
-### 📥 [Download Latest APK](https://github.com/moradzadeh67/country_info_sync/releases/latest)
+<p align="center">
+  <a href="https://github.com/moradzadeh67/country_info_sync/releases/latest">
+    <img src="https://img.shields.io/github/v/release/moradzadeh67/country_info_sync?style=for-the-badge&color=2e7d32" alt="Latest Release">
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/License-MIT-orange.svg?style=for-the-badge" alt="License MIT">
+  </a>
+  <a href="https://flutter.dev">
+    <img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20macOS%20%7C%20Web-02569B?style=for-the-badge&logo=flutter" alt="Platform Support">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/moradzadeh67/country_info_sync/releases/latest"><b>📥 Download Latest APK</b></a> •
+  <a href="#-features"><b>✨ Features</b></a> •
+  <a href="#-architecture"><b>🏗️ Architecture</b></a> •
+  <a href="#-installation--running"><b>🚀 Getting Started</b></a> •
+  <a href="#-troubleshooting--faq"><b>❓ FAQ</b></a>
+</p>
+
+---
 
 ## 💡 Why I Built This
 
@@ -54,7 +78,14 @@ Here is what the app can do, in plain terms:
 - 🌗 **Dark & Light Theme** — Toggle between themes from the app bar. The choice is remembered across restarts.
 - 💾 **Offline-First** — Country data is cached in Hive; if the network is unavailable a bundled `countries.json` is used as a final fallback.
 - 📱 **Polished, Adaptive UI** — Responsive spacing that scales across screen sizes, shimmer loading placeholders, graceful empty/error states, and auto-shrinking text for very long country names.
-- 🌐 **Localization-ready** — Latin text uses **Inter**; Persian/Arabic glyphs automatically fall back to **Vazirmatn**, so mixed strings render correctly.
+- 🌐 **Localization & Font Fallback** — Latin text uses **Inter**; Persian/Arabic glyphs automatically fall back to **Vazirmatn**, ensuring mixed strings render flawlessly.
+
+## 🌐 Localization & Language Support
+
+Country Info Sync is built with first-class internationalization (i18n) goals:
+- **Primary Target Languages:** Persian (Farsi) & English.
+- **Font & Glyph Management:** Uses `google_fonts` with glyph-level fallback. English/Latin characters utilize **Inter**, while Persian/Arabic glyphs automatically fall back to **Vazirmatn**.
+- **Layout Adaptation:** Automatic RTL (Right-To-Left) / LTR support via Flutter's `flutter_localizations` delegate setup.
 
 ## 🗺️ Roadmap
 
@@ -85,6 +116,17 @@ Every technical choice in Country Info Sync was made with **simplicity, maintain
 - **Screen-relative design system** — All spacing and sizing derive from `MediaQuery` (via `AppSpacing`). No absolute pixel constants. This makes the UI scale proportionally from small phones to large tablets without breakpoints or media queries scattered across widgets.
 - **Glyph-level font fallback** — Latin text uses **Inter**, but Persian/Arabic glyphs automatically fall back to **Vazirmatn** at the glyph level. This means mixed strings like `"Iran (جمهوری اسلامی)"` render correctly without any per-widget direction logic.
 - **3-tier data fallback** — Country data is fetched in this order: **live API → Hive cache → bundled `countries.json`**. The app remains useful even with zero connectivity.
+
+## 📦 Key Dependencies
+
+| Package | Version | Purpose |
+|---|:---:|---|
+| `hive_flutter` | `^1.1.0` | Fast, lightweight key-value offline database for country & setting persistence |
+| `http` | `^1.6.0` | Minimal HTTP client for fetching country data and Wikipedia REST summaries |
+| `google_fonts` | `^8.2.1` | Dynamic typography with **Inter** and **Vazirmatn** glyph fallbacks |
+| `cached_network_image` | `^4.0.2` | High-performance image caching for country flags |
+| `url_launcher` | `^6.3.2` | Opening external Wikipedia articles safely in native browser/custom tabs |
+| `flutter_localizations` | `sdk` | Core Flutter i18n and RTL layout support |
 
 ## 🏗️ Architecture
 
@@ -156,17 +198,24 @@ lib/
 ### Getting Started
 
 1. **Clone the repository**:
+   ```bash
    git clone https://github.com/moradzadeh67/country_info_sync.git
    cd country_info_sync
+   ```
 
 2. **Install dependencies**:
+   ```bash
    flutter pub get
+   ```
 
 3. **Run the application**:
+   ```bash
    flutter run
+   ```
 
 ### Building
 
+```bash
 # Build Android APK
 flutter build apk --release
 
@@ -178,6 +227,42 @@ flutter build ios --release
 
 # Build Web distribution
 flutter build web --release
+```
+
+## 🧪 Testing & Quality Assurance
+
+To ensure code quality, static analysis compliance, and UI regression prevention:
+
+```bash
+# Analyze code for errors and lint compliance
+flutter analyze
+
+# Run unit and widget tests
+flutter test
+```
+
+## ❓ Troubleshooting & FAQ
+
+<details>
+<summary><b>1. How does the offline fallback mechanism work?</b></summary>
+
+Country Info Sync implements a 3-tier fallback strategy:
+1. **Live Network:** On launch, the app attempts to fetch fresh data from `countries.dev`.
+2. **Hive Local Cache:** If offline or the request fails, Hive returns previously cached data.
+3. **Bundled Asset Fallback:** On a fresh install with zero internet connection, the app hydrates using the bundled `assets/data/countries.json` dataset.
+</details>
+
+<details>
+<summary><b>2. How do I clear or reset local Hive boxes?</b></summary>
+
+If you encounter stale data or want to test first-launch behavior, clear the application data via your OS Settings, or uninstall and reinstall the app.
+</details>
+
+<details>
+<summary><b>3. Why are build_runner or hive_generator missing?</b></summary>
+
+To eliminate code-generation overhead and reduce build times, `CountryAdapter` is hand-written directly in `lib/models/country.dart`.
+</details>
 
 ## 💻 Development Environment
 This project is developed and tested on:
