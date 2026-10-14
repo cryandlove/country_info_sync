@@ -13,17 +13,33 @@
       <stop offset="100%" stop-color="#10B981" stop-opacity="0.4"/>
     </linearGradient>
 
-    <!-- Globe Gradients -->
-    <radialGradient id="globeOcean" cx="40%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#1D4ED8"/>
-      <stop offset="60%" stop-color="#0F2B5B"/>
-      <stop offset="100%" stop-color="#06122B"/>
+    <!-- App Logo Gradients -->
+    <radialGradient id="logoOcean" cx="38%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#1E5C99"/>
+      <stop offset="55%" stop-color="#0D3055"/>
+      <stop offset="100%" stop-color="#04101F"/>
     </radialGradient>
 
-    <linearGradient id="landGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#4ADE80"/>
-      <stop offset="100%" stop-color="#10B981"/>
+    <linearGradient id="logoLand" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#9BFFC0"/>
+      <stop offset="45%" stop-color="#4DE98C"/>
+      <stop offset="100%" stop-color="#12A857"/>
     </linearGradient>
+
+    <linearGradient id="logoPlate" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#1B4A38"/>
+      <stop offset="55%" stop-color="#092018"/>
+      <stop offset="100%" stop-color="#030906"/>
+    </linearGradient>
+
+    <radialGradient id="logoSpec" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+
+    <clipPath id="logoGlobeClip">
+      <circle cx="0" cy="0" r="85"/>
+    </clipPath>
 
     <radialGradient id="glowGlow" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#22C55E" stop-opacity="0.25"/>
@@ -53,44 +69,51 @@
     <path d="M150 0 V380 M300 0 V380 M450 0 V380 M600 0 V380 M750 0 V380 M900 0 V380 M1050 0 V380"/>
   </g>
 
-  <!-- Ambient Glow Behind Globe -->
+  <!-- Ambient Glow Behind App Logo -->
   <circle cx="950" cy="190" r="220" fill="url(#glowGlow)"/>
 
   <!-- Orbital Rings / Sync Waves -->
   <ellipse cx="950" cy="190" rx="190" ry="60" fill="none" stroke="#22C55E" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="8 6" transform="rotate(-20 950 190)"/>
   <ellipse cx="950" cy="190" rx="210" ry="70" fill="none" stroke="#38BDF8" stroke-opacity="0.2" stroke-width="1.5" transform="rotate(15 950 190)"/>
 
-  <!-- Globe Illustration (Right Side) -->
+  <!-- App Logo (Right Side) -->
   <g transform="translate(950, 190)">
-    <!-- Base Globe Sphere -->
-    <circle cx="0" cy="0" r="120" fill="url(#globeOcean)" stroke="#38BDF8" stroke-opacity="0.3" stroke-width="2"/>
+    <!-- Rounded-square logo plate -->
+    <rect x="-115" y="-115" width="230" height="230" rx="54" fill="url(#logoPlate)"/>
+    <rect x="-113" y="-113" width="226" height="226" rx="52" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="3"/>
 
-    <!-- Latitude / Longitude Grid -->
-    <ellipse cx="0" cy="0" rx="120" ry="40" fill="none" stroke="#60A5FA" stroke-opacity="0.2" stroke-width="1"/>
-    <ellipse cx="0" cy="0" rx="120" ry="80" fill="none" stroke="#60A5FA" stroke-opacity="0.2" stroke-width="1"/>
-    <ellipse cx="0" cy="0" rx="40" ry="120" fill="none" stroke="#60A5FA" stroke-opacity="0.2" stroke-width="1"/>
-    <ellipse cx="0" cy="0" rx="80" ry="120" fill="none" stroke="#60A5FA" stroke-opacity="0.2" stroke-width="1"/>
-    <line x1="-120" y1="0" x2="120" y2="0" stroke="#60A5FA" stroke-opacity="0.3" stroke-width="1"/>
-    <line x1="0" y1="-120" x2="0" y2="120" stroke="#60A5FA" stroke-opacity="0.3" stroke-width="1"/>
+    <!-- Globe inside the logo -->
+    <circle cx="0" cy="0" r="85" fill="url(#logoOcean)"/>
+    <circle cx="0" cy="0" r="85" fill="none" stroke="#A8FFCB" stroke-opacity="0.75" stroke-width="2"/>
 
-    <!-- Stylized Continents -->
-    <!-- North America & South America -->
-    <path d="M-70 -50 C-50 -60 -30 -40 -40 -20 C-50 0 -35 20 -45 50 C-55 70 -70 40 -80 10 Z" fill="url(#landGrad)" opacity="0.85"/>
-    <!-- Eurasia & Africa -->
-    <path d="M10 -60 C40 -70 70 -40 60 -10 C50 0 70 30 50 60 C30 70 10 40 20 10 C0 -10 -10 -40 10 -60 Z" fill="url(#landGrad)" opacity="0.85"/>
+    <!-- Continents (green world map) -->
+    <g clip-path="url(#logoGlobeClip)" fill="url(#logoLand)">
+      <!-- North America -->
+      <path d="M -76 -58 C -66 -68 -46 -70 -28 -66 C -18 -63 -12 -56 -16 -50 C -20 -45 -28 -46 -30 -40 C -32 -33 -26 -27 -30 -19 C -34 -11 -28 -6 -22 -8 C -16 -10 -14 -4 -20 2 C -26 8 -36 8 -40 2 C -45 -5 -50 -9 -58 -9 C -68 -11 -74 -20 -74 -30 C -72 -38 -78 -48 -76 -58 Z"/>
+      <!-- Greenland -->
+      <path d="M -38 -84 C -28 -90 -14 -86 -12 -78 C -10 -70 -22 -66 -32 -70 C -42 -74 -46 -80 -38 -84 Z"/>
+      <!-- South America -->
+      <path d="M -48 -4 C -38 -8 -28 -2 -28 8 C -28 18 -34 24 -32 34 C -30 44 -36 54 -42 66 C -46 74 -54 74 -58 64 C -61 55 -57 46 -60 34 C -63 23 -58 12 -60 4 C -61 -1 -54 -2 -48 -4 Z"/>
+      <!-- Europe -->
+      <path d="M -8 -52 C 0 -58 12 -57 22 -50 C 27 -46 26 -40 20 -40 C 13 -40 8 -44 2 -41 C -4 -39 -9 -44 -8 -52 Z"/>
+      <!-- Scandinavia -->
+      <path d="M -2 -64 C 4 -72 14 -70 15 -63 C 16 -57 6 -54 -1 -58 C -5 -60 -4 -62 -2 -64 Z"/>
+      <!-- Africa -->
+      <path d="M -12 -26 C -4 -32 10 -32 20 -25 C 28 -19 30 -8 27 2 C 24 12 20 26 12 35 C 4 44 -6 41 -8 31 C -10 21 -15 12 -14 2 C -13 -8 -17 -18 -12 -26 Z"/>
+      <!-- Asia -->
+      <path d="M 26 -50 C 36 -62 52 -68 66 -63 C 78 -58 80 -48 74 -43 C 67 -38 58 -40 54 -33 C 50 -26 52 -16 45 -11 C 38 -6 33 -13 34 -22 C 35 -32 22 -42 26 -50 Z"/>
+      <!-- Australia -->
+      <path d="M 47 36 C 56 29 70 30 76 39 C 81 47 74 55 63 54 C 53 53 45 49 43 43 C 42 40 44 37 47 36 Z"/>
+    </g>
 
-    <!-- Floating Data Nodes / Sync Pulse Dots -->
-    <circle cx="-35" cy="-25" r="5" fill="#4ADE80"/>
-    <circle cx="-35" cy="-25" r="10" fill="none" stroke="#4ADE80" stroke-opacity="0.6" stroke-width="1.5"/>
+    <!-- Specular highlight -->
+    <ellipse cx="-34" cy="-40" rx="40" ry="28" fill="url(#logoSpec)" clip-path="url(#logoGlobeClip)" transform="rotate(-28 -34 -40)"/>
 
-    <circle cx="35" cy="-15" r="5" fill="#38BDF8"/>
-    <circle cx="35" cy="-15" r="10" fill="none" stroke="#38BDF8" stroke-opacity="0.6" stroke-width="1.5"/>
-
-    <circle cx="15" cy="35" r="4" fill="#FACC15"/>
-    <circle cx="15" cy="35" r="8" fill="none" stroke="#FACC15" stroke-opacity="0.6" stroke-width="1.5"/>
-
-    <!-- Connection Line representing Sync -->
-    <path d="M-35 -25 Q 0 -50 35 -15" fill="none" stroke="#4ADE80" stroke-opacity="0.8" stroke-width="2" stroke-dasharray="4 3"/>
+    <!-- Sync pulse accents -->
+    <circle cx="-116" cy="-70" r="6" fill="#4ADE80"/>
+    <circle cx="-116" cy="-70" r="13" fill="none" stroke="#4ADE80" stroke-opacity="0.5" stroke-width="2"/>
+    <circle cx="112" cy="72" r="5" fill="#38BDF8"/>
+    <circle cx="112" cy="72" r="11" fill="none" stroke="#38BDF8" stroke-opacity="0.5" stroke-width="2"/>
   </g>
 
   <!-- Left Content Area -->
