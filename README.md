@@ -1,13 +1,7 @@
 <p align="center">
   <a href="https://github.com/moradzadeh67/country_info_sync">
-    <img src="assets/images/logo-256.png" width="128" height="128" alt="Country Info Sync Logo">
+    <img src="assets/images/hero-banner.svg" width="100%" alt="Country Info Sync Banner">
   </a>
-</p>
-
-<h1 align="center">Country Info Sync</h1>
-
-<p align="center">
-  <b>A professional, offline-first Flutter application for exploring global country information — with live API data, Wikipedia summaries, and a curated list of UNESCO heritage sites.</b>
 </p>
 
 <p align="center">
