@@ -1,11 +1,11 @@
 {
-    "name": "country_info_sync",
-    "short_name": "country_info_sync",
+    "name": "Country Info Sync",
+    "short_name": "Country Info Sync",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0E2820",
+    "theme_color": "#0E2820",
+    "description": "Offline-first Flutter app for exploring country information with live API data, Hive caching, favorites, and side-by-side comparison.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

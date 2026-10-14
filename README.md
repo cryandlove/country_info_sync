@@ -14,10 +14,17 @@
   <a href="https://flutter.dev">
     <img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20macOS%20%7C%20Web-02569B?style=for-the-badge&logo=flutter" alt="Platform Support">
   </a>
+  <a href="https://github.com/moradzadeh67/country_info_sync/actions/workflows/ci.yml">
+    <img src="https://github.com/moradzadeh67/country_info_sync/actions/workflows/ci.yml/badge.svg" alt="CI Status">
+  </a>
+  <a href="https://moradzadeh67.github.io/country_info_sync/">
+    <img src="https://img.shields.io/badge/Live%20Demo-moradzadeh67.github.io-blue?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo">
+  </a>
 </p>
 
 <p align="center">
   <a href="https://github.com/moradzadeh67/country_info_sync/releases/latest"><b>📥 Download Latest APK</b></a> •
+  <a href="https://moradzadeh67.github.io/country_info_sync/"><b>🌐 Live Web Demo</b></a> •
   <a href="#-features"><b>✨ Features</b></a> •
   <a href="#-architecture"><b>🏗️ Architecture</b></a> •
   <a href="#-installation--running"><b>🚀 Getting Started</b></a> •
@@ -26,9 +33,26 @@
 
 ---
 
+## 🌍 What is Country Info Sync?
+
+**Country Info Sync** is a **free, open-source country information app** built with **Flutter**. It is **offline-first** and runs on **Android, iOS, macOS and the web**.
+
+Look up any country and see its flag, capital, population, area, languages, currencies, timezones, calling code and bordering countries. Save favourites, compare two countries **side by side**, read **UNESCO World Heritage** entries, and pull a short **Wikipedia** summary — all of it cached locally with Hive, so the app still works with no internet connection.
+
+- ✅ **100% free** — no ads, no accounts, no tracking
+- ✅ **MIT licensed** — read it, fork it, ship it
+- ✅ **No API keys required** — every upstream service is open
+- ✅ **Works offline** — three-tier fallback: live API → Hive cache → bundled data
+
 ## 💡 Why I Built This
 
 I wanted to explore a real-world Flutter project that combines **live API data**, **offline-first caching**, and **rich country information** in a single app. Most country explorer apps I found were either too basic (just a list of names) or too complex (over-engineered state management). Country Info Sync is my attempt at a **balanced middle ground**: a clean, adaptive UI with smart caching, persistent favorites, and a side-by-side comparison mode — all without adding unnecessary dependencies.
+
+## 🎬 Demo
+
+<img src="assets/demo/demo.gif" width="320" alt="Country Info Sync demo: scrolling the country list, searching for Iran, favouriting it, opening the details screen with the Wikipedia summary, and switching to dark mode">
+
+A 30-second tour: browse the list, search by name, save a favourite, open a country's details with its Wikipedia summary, then switch to dark mode.
 
 ## 📸 Screenshots
 
@@ -179,12 +203,17 @@ lib/
 
 ## 🚀 Installation & Running
 
+> [!IMPORTANT]
+> **Upgrading from v1.0.x?** In **v1.1.0** the Android application ID changed from `com.example.country_info_sync` to `io.github.moradzadeh67.country_info_sync`.
+> Android treats these as two different apps, so **uninstall the old version first** — installing the new APK over it will fail with a signature/conflict error.
+> Your locally saved favourites and cached data live in the old app's sandbox, so they will not carry over either.
+
 ### Prerequisites
 
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) (v3.13.2+)
-- Dart SDK (v3.x)
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (v3.47.2+)
+- Dart SDK (^3.13.2)
 - Platform-specific:
-  - **Android**: Android SDK 21+
+  - **Android**: Android SDK 24+ (`minSdk 24`, `targetSdk 36`)
   - **iOS**: Xcode 14+
   - **macOS**: Xcode 14+
   - **Web**: Any modern browser
@@ -234,6 +263,68 @@ flutter analyze
 # Run unit and widget tests
 flutter test
 ```
+
+## 🔐 Release Signing
+
+Release builds are signed with a keystore that lives **outside** the repository. Its
+credentials are read from `android/key.properties`, which is git-ignored and never committed.
+
+```properties
+# android/key.properties — NEVER commit this file
+storePassword=YOUR_STORE_PASSWORD_HERE
+keyPassword=YOUR_KEY_PASSWORD_HERE
+keyAlias=YOUR_KEY_ALIAS_HERE
+storeFile=/absolute/path/to/your/upload-keystore.jks
+```
+
+Create your own upload key with `keytool`:
+
+```bash
+keytool -genkeypair -v \
+  -keystore ~/keystores/country_info_sync.jks \
+  -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 \
+  -alias country_info_sync \
+  -dname "CN=your-name, OU=Development, O=your-name, C=IR"
+```
+
+Then build and verify the signed APK:
+
+```bash
+flutter build apk --release
+
+# Confirm which key signed it
+$ANDROID_HOME/build-tools/<version>/apksigner verify --print-certs \
+  build/app/outputs/flutter-apk/app-release.apk
+```
+
+> [!NOTE]
+> If `android/key.properties` is missing — on a fresh clone, for example — Gradle
+automatically falls back to the debug signing key. The build never breaks; it simply
+is not signed with the release key.
+
+> [!CAUTION]
+> Back up your keystore and its passwords somewhere safe. If the upload key is lost
+you can no longer publish updates for this app.
+
+## 🔄 CI/CD & Live Demo
+
+| Workflow | Trigger | What it does |
+|---|---|---|
+| [`ci.yml`](.github/workflows/ci.yml) | push & PR to `main` | Runs `flutter analyze` and `flutter test` on Flutter 3.47.2 |
+| [`deploy-web.yml`](.github/workflows/deploy-web.yml) | push to `main` | Builds the web bundle and publishes the site to GitHub Pages |
+
+**Published site:** <https://moradzadeh67.github.io/country_info_sync/>
+
+The site is assembled in CI from two parts:
+
+- `/` — a static, crawlable HTML landing page from [`landing/index.html`](landing/index.html), plus `robots.txt`, a `sitemap.xml` and a 1200×630 social share image. A Flutter web build renders into a canvas and exposes almost no text to search engines, so this page is the part that actually gets indexed.
+- `/app/` — the Flutter web app itself, built with `--base-href /country_info_sync/app/`.
+
+[![CI](https://github.com/moradzadeh67/country_info_sync/actions/workflows/ci.yml/badge.svg)](https://github.com/moradzadeh67/country_info_sync/actions/workflows/ci.yml)
+
+> [!NOTE]
+> No secrets live in this repository. `android/key.properties`, `*.jks` and `*.keystore`
+are all ignored by Git, and **no API keys are required** to run the app.
 
 ## ❓ Troubleshooting & FAQ
 

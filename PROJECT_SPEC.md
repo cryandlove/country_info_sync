@@ -15,8 +15,8 @@ Country Info Sync is a professional, offline-first mobile and desktop applicatio
 - **Localization & Font Fallbacks**: Latin text uses **Inter**; Persian/Arabic glyphs automatically fall back to **Vazirmatn** for flawless mixed-string rendering.
 
 ## 3. Technology Stack
-- **Framework**: Flutter (v3.13.2+)
-- **Language**: Dart (v3.x)
+- **Framework**: Flutter (v3.47.2, stable channel)
+- **Language**: Dart (^3.13.2)
 - **Networking**: `http` package
 - **Local Storage**: `hive` and `hive_flutter`
 - **Fonts**: `google_fonts` (Inter + Vazirmatn)
@@ -34,4 +34,46 @@ Country Info Sync is a professional, offline-first mobile and desktop applicatio
 ## 5. Non-Functional Requirements
 - **Simplicity**: Avoid over-engineering. Zero unnecessary abstractions or code generation.
 - **Maintainability**: Clean, readable, hand-written Hive adapters and modular services.
-- **Performance**: Fast loading, offline resilience, and smooth 60fps scrolling across Android, iOS, macOS, and Web.
+- **Performance**: Fast loading, offline resilience, and smooth 60fps scrolling on Android, iOS, macOS, and Web.
+- **Security**: No API keys are required to run the app. Signing material (`android/key.properties`, `*.jks`, `*.keystore`) is git-ignored and never committed.
+
+## 6. Identity & Platforms
+
+- **Display name (all platforms)**: `Country Info Sync`
+- **Android / Linux application ID**: `io.github.moradzadeh67.country_info_sync`
+- **iOS / macOS bundle ID**: `io.github.moradzadeh67.countryInfoSync` (Apple bundle IDs cannot contain underscores)
+- **Current version**: `1.1.0+2`
+
+| Platform | Status |
+|---|---|
+| Android | ✅ Tested — `minSdk 24`, `targetSdk 36` |
+| iOS | ✅ Tested |
+| macOS | ✅ Tested — Apple Silicon |
+| Web | ✅ Tested |
+| Windows | ⚠️ Untested — build available |
+| Linux | ⚠️ Untested — build available |
+
+## 7. Release & CI/CD
+
+- **Signing**: release builds are signed with an upload key kept outside the repository at `~/keystores/country_info_sync.jks`. Credentials are read from `android/key.properties`, which is git-ignored. If that file is absent, Gradle falls back to the debug key so a fresh clone still builds.
+- **CI** (`.github/workflows/ci.yml`): runs `flutter analyze` and `flutter test` on Flutter 3.47.2 for every push and PR to `main`.
+- **Published site** (`.github/workflows/deploy-web.yml`): assembles and publishes the site to GitHub Pages — <https://moradzadeh67.github.io/country_info_sync/>
+- **Repository**: <https://github.com/moradzadeh67/country_info_sync> — MIT licensed, public.
+
+## 8. Web Presence & Discoverability
+
+The published GitHub Pages site is split in two so that search engines have something to read:
+
+- `/` — a static, crawlable HTML landing page (`landing/index.html`) with a keyword-rich title and meta description, Open Graph and Twitter cards, JSON-LD `SoftwareApplication` structured data, feature copy, screenshots with alt text, and an FAQ. A Flutter web build renders into a canvas and exposes almost no text to crawlers, so this page is the part that gets indexed.
+- `/app/` — the Flutter web app, built with `--base-href /country_info_sync/app/`.
+
+`robots.txt`, `sitemap.xml` and a 1200×630 `og-image.png` are published alongside them. A 30-second demo GIF (`assets/demo/demo.gif`), recorded on an Android emulator, is embedded in both the README and the landing page.
+
+Metadata that lives on GitHub rather than in the repository: the repository description, the topic list, and the social preview image (Settings → Social preview).
+
+## 9. Related Documents
+
+- [`AGENTS.md`](AGENTS.md) — the rules the codebase is built and reviewed against.
+- [`TASKS.md`](TASKS.md) — the task-by-task plan, phase by phase.
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — how to set up and contribute.
+- [`README.md`](README.md) — user-facing overview, screenshots, and setup.

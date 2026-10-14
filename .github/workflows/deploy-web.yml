@@ -1,0 +1,70 @@
+name: Deploy web demo
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build the site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.2'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # The app is served from /app/ so that the site root can hold a real,
+      # crawlable HTML landing page. A Flutter web build renders into a canvas
+      # and exposes almost no text to search engines, so the landing page is
+      # what actually gets indexed.
+      - name: Build the web app
+        run: flutter build web --release --base-href /country_info_sync/app/
+
+      - name: Assemble the published site
+        run: |
+          set -e
+          mkdir -p _site/app
+          cp -r build/web/. _site/app/
+          cp landing/index.html _site/index.html
+          cp landing/robots.txt _site/robots.txt
+          cp landing/sitemap.xml _site/sitemap.xml
+          cp landing/og-image.png _site/og-image.png
+          cp assets/demo/demo.gif _site/demo.gif
+          mkdir -p _site/screenshots
+          cp -r assets/screenshots/android assets/screenshots/ios _site/screenshots/
+
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Publish to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

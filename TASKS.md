@@ -4,6 +4,24 @@ This file follows the task template required by `AGENTS.md` (Section 5).
 Each task must be planned, approved, implemented, and tested individually.
 Do not start a task until the previous one is tested and confirmed working.
 
+---
+
+## Status
+
+Phases 1–4 below are **implemented and verified**. Phase 5 was added later to
+make the project publishable.
+
+| Phase | Scope | Status |
+|---|---|---|
+| Phase 1 | Favorites — Hive box, service, UI toggle, filter | ✅ Done |
+| Phase 2 | Compare — selection mode, button, screen, null handling | ✅ Done |
+| Phase 3 | Dark mode — notifier, dark theme, wiring, toggle, persistence | ✅ Done |
+| Phase 4 | UNESCO heritage — dataset, asset, model/service, details UI | ✅ Done |
+| Phase 5 | Branding, app ID, release signing, CI/CD, docs | ✅ Done — see the end of this file |
+
+Last verified with `flutter analyze` (no issues) and `flutter test`
+(all passing) on Flutter 3.47.2.
+
 ## Project Facts (verified, not assumed)
 
 - `Country` model has **no ISO code field** (no `cca2`/`cca3`). The only
@@ -13,11 +31,15 @@ Do not start a task until the previous one is tested and confirmed working.
   (no `hive_generator`/`build_runner` in `pubspec.yaml`). New Hive data in
   this project should stay on primitive types (`List<String>`, `bool`,
   `String`) to avoid needing a new adapter or new dependency.
-- `pubspec.yaml` has **no `provider` package**, despite the README claiming
-  Provider is used. State in this project is plain `StatefulWidget`/
-  `setState`. Tasks below assume no state-management package is added.
-- Existing Hive box: `countries_cache_v3`, typed `Box<Country>`, opened
-  inside `CountryService.getCountries()`.
+- `pubspec.yaml` has **no `provider` package**. State in this project is
+  plain `StatefulWidget`/`setState`, plus a single
+  `ValueNotifier<ThemeMode>` for the theme. No state-management package is
+  used anywhere.
+- Existing Hive box: `countries_cache_v4`, typed `Box<Country>`, opened
+  inside `CountryService.getCountries()`. (The name was bumped from `v3`
+  when the JSON schema changed.)
+- Other Hive boxes opened in `main.dart`: `favorites_box` (`Box<List>`),
+  `insight_cache`, and `settings_box` (stores the saved theme mode).
 
 ---
 
@@ -42,7 +64,7 @@ Do not start a task until the previous one is tested and confirmed working.
 
 **Acceptance criteria:**
 - App builds and launches without errors.
-- No change to existing `countries_cache_v3` behavior.
+- No change to existing `countries_cache_v4` behavior.
 
 **Test procedure:**
 - Run the app (`flutter run`). Confirm normal startup, country list loads
@@ -242,8 +264,8 @@ with the right data.
 - Display a two-column layout with rows for: `population`, `area`,
   `capital`, `currencies`, `languages`, `subregion`, `continent`,
   `timezones`.
-- Use the existing app theme/typography (Poppins via `google_fonts`) for
-  consistency with the rest of the app.
+- Use the existing app theme/typography (Inter + Vazirmatn via
+  `google_fonts`) for consistency with the rest of the app.
 
 **Expected result:** A readable side-by-side comparison screen.
 
@@ -332,7 +354,7 @@ without adding a state-management package.
 - Define `darkTheme` using
   `ColorScheme.fromSeed(seedColor: <existing seed>, brightness: Brightness.dark)`,
   reusing the same seed color as the current light theme for visual
-  consistency, plus the existing Poppins/`google_fonts` text theme.
+  consistency, plus the existing Inter + Vazirmatn text theme.
 
 **Expected result:** A valid dark `ThemeData` object exists but is not yet
 wired to the app.
@@ -576,3 +598,105 @@ Phase 1 (Favorites) → Phase 2 (Compare) → Phase 3 (Dark Mode) → Phase 4
 (Heritage). Do not start a later phase's Task 1 until the previous
 phase's final task has been tested and confirmed, per `AGENTS.md`
 Section 5 ("One Task at a Time").
+
+---
+
+## PHASE 5 — Branding, Release & Tooling
+
+This phase was not in the original plan; it was required to make the
+project safe to publish.
+
+### Task 5.1 — App identity
+
+**Goal:** Replace every `flutter create` placeholder with the real identity.
+
+**Files affected:** `pubspec.yaml`, `android/app/src/main/AndroidManifest.xml`,
+`android/app/build.gradle.kts`, `web/index.html`, `web/manifest.json`,
+`macos/Runner/Configs/AppInfo.xcconfig`, `windows/runner/Runner.rc`,
+`linux/CMakeLists.txt`, the iOS/macOS `project.pbxproj`, and `MainActivity.kt`.
+
+**Result:**
+- Display name on every platform: `Country Info Sync`.
+- Android / Linux application ID: `io.github.moradzadeh67.country_info_sync`.
+- iOS / macOS bundle ID: `io.github.moradzadeh67.countryInfoSync` —
+  underscores are not legal in Apple bundle identifiers.
+- `MainActivity` moved to the matching package directory.
+- No `com.example` string remains anywhere in the repository.
+
+**Breaking change:** the Android application ID changed, so users on `v1.0.x`
+must uninstall the old build first — Android treats it as a different app and
+will refuse the install otherwise.
+
+### Task 5.2 — Release signing
+
+**Goal:** Ship an APK signed with a real upload key without ever committing it.
+
+**Files affected:** `android/app/build.gradle.kts`, `.gitignore`.
+
+**Result:**
+- Keystore lives outside the repo at `~/keystores/country_info_sync.jks`.
+- Credentials are read from `android/key.properties`, which is git-ignored,
+  along with `*.jks` and `*.keystore`.
+- If that file is missing, Gradle falls back to the debug key, so anyone who
+  clones the project can still build.
+
+### Task 5.3 — CI and live web demo
+
+**Files affected:** `.github/workflows/ci.yml`, `.github/workflows/deploy-web.yml`.
+
+**Result:**
+- `ci.yml` runs `flutter analyze` and `flutter test` on Flutter 3.47.2 for
+  every push and PR to `main`.
+- `deploy-web.yml` builds the web bundle and publishes it to GitHub Pages at
+  <https://moradzadeh67.github.io/country_info_sync/>.
+
+### Task 5.4 — Documentation
+
+**Files affected:** `README.md`, `CONTRIBUTING.md`, `PROJECT_SPEC.md`,
+`.github/ISSUE_TEMPLATE/bug_report.md`.
+
+**Result:** the README now documents release signing and CI/CD, and
+`CONTRIBUTING.md` gained the project-specific conventions plus links to the
+other documents.
+
+### Task 5.5 — Landing page and discoverability
+
+**Goal:** make the published site something a search engine can actually read.
+
+**Files affected:** `landing/index.html` (new), `landing/robots.txt` (new),
+`landing/sitemap.xml` (new), `landing/og-image.svg` + `landing/og-image.png`
+(new), `.github/workflows/deploy-web.yml`.
+
+**Why:** a Flutter web build renders into a canvas and exposes almost no text,
+so a crawler sees only the document title and meta description. The landing
+page is the fix.
+
+**Result:**
+- The site root now serves a static HTML landing page with a keyword-rich title
+  and description, Open Graph and Twitter cards, JSON-LD
+  `SoftwareApplication` structured data, feature copy, screenshots with alt
+  text, and an FAQ.
+- The Flutter app moved to `/app/`, built with
+  `--base-href /country_info_sync/app/`.
+- `robots.txt`, `sitemap.xml` and a 1200×630 `og-image.png` are published
+  alongside it.
+- `deploy-web.yml` assembles all of this into `_site/` before upload.
+- A 30-second demo GIF (`assets/demo/demo.gif`) was recorded on the Android
+  emulator with `adb shell screenrecord` and encoded with `ffmpeg`. It is
+  embedded in both the README and the landing page. Note that `screenrecord`
+  outputs 720x1280 regardless of the device aspect ratio, so the frame is
+  rescaled back to the real proportions during encoding.
+
+---
+
+## Known follow-ups
+
+Found while auditing the docs against the code, not yet fixed:
+
+- `lib/screens/onboarding_screen.dart` is an unused 15-line stub that is not
+  referenced from `main.dart`, and it loads `assets/logo.png`, which does not
+  exist. The real assets live in `assets/images/`. Using this screen as-is
+  would crash.
+- `lib/services/country_service.dart` carries the comment "Incremented to v4
+  for alpha2Code schema", but `Country` has no `alpha2Code` field. The comment
+  is misleading.

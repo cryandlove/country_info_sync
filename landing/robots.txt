@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://moradzadeh67.github.io/country_info_sync/sitemap.xml

@@ -24,10 +24,10 @@ Steps to reproduce the behavior:
 <!-- If applicable, add screenshots or screen recordings to help explain your problem. -->
 
 ## 💻 Environment
- - **App Version:** [e.g. 1.0.0]
+ - **App Version:** [e.g. 1.1.0]
  - **Device / Emulator:** [e.g. Pixel 7, iPhone 14, macOS]
  - **OS & Version:** [e.g. Android 13, iOS 16.5, macOS 14.0]
- - **Flutter Version:** [e.g. 3.13.2 or 3.47.2]
+ - **Flutter Version:** [e.g. 3.47.2]
 
 ## 📌 Additional Context
 <!-- Add any other context about the problem here (e.g. console logs or stack traces). -->

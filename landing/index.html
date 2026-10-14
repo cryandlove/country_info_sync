@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Country Info Sync — Free Offline Country Information App for Android, iOS, macOS &amp; Web</title>
+
+<meta name="description" content="Country Info Sync is a free, open-source Flutter app for exploring country information offline. Look up flags, capitals, population, area, languages, currencies, timezones and bordering countries, compare two countries side by side, read UNESCO World Heritage entries and Wikipedia summaries. Runs on Android, iOS, macOS and the web with no ads, no accounts and no API keys.">
+
+<meta name="keywords" content="country information app, offline country app, free country app, open source country explorer, country comparison app, UNESCO world heritage app, flutter country app, country data offline, flags capitals population">
+
+<link rel="canonical" href="https://moradzadeh67.github.io/country_info_sync/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0B1F19">
+<link rel="icon" type="image/png" href="app/icons/Icon-192.png">
+<link rel="apple-touch-icon" href="app/icons/Icon-192.png">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Country Info Sync">
+<meta property="og:title" content="Country Info Sync — Free Offline Country Information App">
+<meta property="og:description" content="Explore every country offline: flags, capitals, population, languages, currencies, UNESCO heritage sites and Wikipedia summaries. Free, open source, no ads, no accounts.">
+<meta property="og:url" content="https://moradzadeh67.github.io/country_info_sync/">
+<meta property="og:image" content="https://moradzadeh67.github.io/country_info_sync/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Country Info Sync — Free Offline Country Information App">
+<meta name="twitter:description" content="Explore every country offline: flags, capitals, population, languages, currencies, UNESCO heritage sites and Wikipedia summaries. Free and open source.">
+<meta name="twitter:image" content="https://moradzadeh67.github.io/country_info_sync/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Country Info Sync",
+  "alternateName": "Country Info Sync — offline country explorer",
+  "description": "A free, open-source, offline-first Flutter app for exploring country information, comparing countries and reading UNESCO World Heritage and Wikipedia summaries.",
+  "url": "https://moradzadeh67.github.io/country_info_sync/",
+  "applicationCategory": "EducationalApplication",
+  "applicationSubCategory": "Reference",
+  "operatingSystem": "Android, iOS, macOS, Web, Windows, Linux",
+  "downloadUrl": "https://github.com/moradzadeh67/country_info_sync/releases/latest",
+  "installUrl": "https://github.com/moradzadeh67/country_info_sync/releases/latest",
+  "softwareVersion": "1.1.0",
+  "license": "https://opensource.org/licenses/MIT",
+  "codeRepository": "https://github.com/moradzadeh67/country_info_sync",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "moradzadeh67",
+    "url": "https://github.com/moradzadeh67"
+  },
+  "programmingLanguage": "Dart",
+  "screenshot": "https://moradzadeh67.github.io/country_info_sync/screenshots/android/home_light.png",
+  "featureList": [
+    "Offline country information with three-tier fallback",
+    "Flags, capitals, population, area, languages and currencies",
+    "Side-by-side comparison of two countries",
+    "Favourites with persistent storage",
+    "UNESCO World Heritage sites",
+    "Wikipedia summaries with caching",
+    "Dark and light theme",
+    "Responsive layout for phones, tablets and desktop"
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --bg: #0B1F19;
+    --surface: #12302A;
+    --surface-2: #16382F;
+    --text: #E8F3EE;
+    --muted: #9FBDB2;
+    --accent: #57CC99;
+    --accent-dark: #0B1F19;
+    --border: #22493E;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.65;
+    font-size: 17px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+  a { color: var(--accent); }
+  header.hero { padding: 56px 0 40px; text-align: center; border-bottom: 1px solid var(--border); }
+  header.hero img.logo { width: 96px; height: 96px; }
+  h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.2; margin: 18px 0 12px; }
+  h2 { font-size: clamp(22px, 3.5vw, 30px); margin: 48px 0 12px; }
+  h3 { font-size: 19px; margin: 26px 0 6px; }
+  p.lead { font-size: clamp(17px, 2.2vw, 20px); color: var(--muted); max-width: 720px; margin: 0 auto 24px; }
+  .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 26px 0 8px; }
+  .btn {
+    display: inline-block; padding: 13px 24px; border-radius: 10px;
+    text-decoration: none; font-weight: 600; border: 1px solid var(--border);
+    color: var(--text); background: var(--surface);
+  }
+  .btn.primary { background: var(--accent); color: var(--accent-dark); border-color: var(--accent); }
+  ul.features { list-style: none; padding: 0; margin: 20px 0; }
+  ul.features li {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 18px; margin-bottom: 12px;
+  }
+  ul.features li strong { color: var(--accent); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .shots { display: flex; gap: 16px; overflow-x: auto; padding: 8px 0 16px; }
+  .shots img { border-radius: 12px; border: 1px solid var(--border); height: 420px; width: auto; }
+  table { width: 100%; border-collapse: collapse; margin-top: 18px; }
+  th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; }
+  .note {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 18px; margin: 20px 0;
+  }
+  footer { margin-top: 56px; padding: 28px 0 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: 15px; text-align: center; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <img class="logo" src="app/icons/Icon-192.png" width="96" height="96" alt="Country Info Sync logo">
+    <h1>Country Info Sync</h1>
+    <p class="lead">
+      A free, open-source app for exploring every country in the world — online or completely offline.
+      Flags, capitals, population, area, languages, currencies, timezones and borders, plus country
+      comparison, UNESCO World Heritage sites and Wikipedia summaries.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="app/">Launch the web app</a>
+      <a class="btn" href="https://github.com/moradzadeh67/country_info_sync/releases/latest">Download the Android APK</a>
+      <a class="btn" href="https://github.com/moradzadeh67/country_info_sync">View the source on GitHub</a>
+    </div>
+    <p class="lead" style="font-size:15px;margin-top:18px;">
+      Runs on Android, iOS, macOS and the web · No ads · No accounts · No tracking · MIT licensed
+    </p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <h2>What is Country Info Sync?</h2>
+  <p>
+    Country Info Sync is an <strong>offline-first country information app</strong> built with Flutter.
+    Open it with no internet connection and it still works: the app keeps a local copy of every
+    country it has ever downloaded, and if that is empty it falls back to a dataset bundled inside
+    the app itself. There is a three-tier data strategy — live API, then local cache, then bundled
+    data — so the app is never a blank screen.
+  </p>
+  <p>
+    It is completely free and fully open source under the MIT licence. There are no advertisements,
+    no in-app purchases, no user accounts and no analytics. You can read the entire source code, fork
+    it, or build your own version with <code>flutter build apk --release</code>.
+  </p>
+
+  <div class="note">
+    <strong>No API keys required.</strong> The app uses only open, keyless services:
+    <a href="https://countries.dev">countries.dev</a> for country data,
+    the <a href="https://www.mediawiki.org/wiki/API:REST_API">Wikipedia REST API</a> for summaries,
+    and <a href="https://whc.unesco.org">UNESCO World Heritage Centre</a> as the reference for
+    heritage sites.
+  </div>
+
+  <h2>Features</h2>
+  <ul class="features">
+    <li>
+      <strong>Country explorer.</strong> A scrollable list of every country with its flag, name and
+      capital city.
+    </li>
+    <li>
+      <strong>Smart search.</strong> Search by country name or capital city. Matching is
+      case-insensitive and exact matches are sorted first.
+    </li>
+    <li>
+      <strong>Favourites.</strong> Tap the heart on any country to save it. Favourites are stored
+      locally and survive a full app restart, and there is a toggle to show only favourites.
+    </li>
+    <li>
+      <strong>Compare two countries.</strong> Long-press up to two countries and open a side-by-side
+      comparison of capital, population, area, continent, subregion, calling code, languages,
+      currencies and timezones.
+    </li>
+    <li>
+      <strong>Country details.</strong> A rich detail screen with an animated flag, native name and
+      grouped sections for general information, communication data and full lists of languages,
+      currencies and bordering countries.
+    </li>
+    <li>
+      <strong>UNESCO World Heritage sites.</strong> Countries with curated data show their heritage
+      sites with descriptions, loaded from an offline JSON file so no network is needed.
+    </li>
+    <li>
+      <strong>Wikipedia summaries.</strong> An "About this country" card with a short summary and a
+      link to the full article. Summaries are cached for offline reuse.
+    </li>
+    <li>
+      <strong>Dark and light theme.</strong> Switch themes from the app bar; the choice is remembered
+      across restarts.
+    </li>
+    <li>
+      <strong>Adaptive layout.</strong> Spacing and typography scale with the screen, so the same
+      code looks right on a small phone, a tablet and a desktop window.
+    </li>
+  </ul>
+
+  <h2>See it in action</h2>
+  <p>
+    A 30-second tour of the app: browse the country list, search by name, save a favourite,
+    open a country's details with its Wikipedia summary, and switch to dark mode.
+  </p>
+  <img src="demo.gif" width="320" height="659" alt="Country Info Sync demo showing the country list, search, favourites, country details and dark mode" loading="lazy">
+
+  <h2>Screenshots</h2>
+  <div class="shots">
+    <img src="screenshots/android/home_light.png" alt="Country Info Sync home screen showing a list of countries with flags and capitals" loading="lazy">
+    <img src="screenshots/android/details.png" alt="Country details screen showing population, capital, languages and currencies" loading="lazy">
+    <img src="screenshots/android/compare.png" alt="Side-by-side comparison of two countries in Country Info Sync" loading="lazy">
+    <img src="screenshots/android/home_dark.png" alt="Country Info Sync home screen in dark mode" loading="lazy">
+  </div>
+
+  <h2>Supported platforms</h2>
+  <table>
+    <thead>
+      <tr><th>Platform</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Android</td><td>Tested — requires Android 7.0 (API 24) or newer</td></tr>
+      <tr><td>iOS</td><td>Tested — iPhone and iPad</td></tr>
+      <tr><td>macOS</td><td>Tested — Apple Silicon</td></tr>
+      <tr><td>Web</td><td>Tested — Chrome, Firefox, Safari</td></tr>
+      <tr><td>Windows</td><td>Build available, untested</td></tr>
+      <tr><td>Linux</td><td>Build available, untested</td></tr>
+    </tbody>
+  </table>
+
+  <h2>How to install</h2>
+  <h3>Android</h3>
+  <p>
+    Download the signed APK from the
+    <a href="https://github.com/moradzadeh67/country_info_sync/releases/latest">latest release</a>
+    and open it on your phone. You may need to allow installation from unknown sources, since the app
+    is distributed directly rather than through a store.
+  </p>
+  <h3>Web</h3>
+  <p>
+    Nothing to install — <a href="app/">open the web app</a> in any modern browser.
+  </p>
+  <h3>Build it yourself</h3>
+  <p>
+    The project targets Flutter 3.47.2 and Dart 3.13.2. Clone the repository, run
+    <code>flutter pub get</code>, then <code>flutter run</code>.
+  </p>
+
+  <h2>Frequently asked questions</h2>
+
+  <h3>Is Country Info Sync really free?</h3>
+  <p>
+    Yes. It is free of charge and open source under the MIT licence. There are no ads, no
+    subscriptions, no accounts and no data collection.
+  </p>
+
+  <h3>Does it work without an internet connection?</h3>
+  <p>
+    Yes. Country data is cached locally with Hive, and a bundled dataset is used as a final fallback,
+    so the app works with zero connectivity.
+  </p>
+
+  <h3>Do I need an API key to run it?</h3>
+  <p>
+    No. All upstream services used by the app are open and keyless.
+  </p>
+
+  <h3>Which countries are covered?</h3>
+  <p>
+    Every country returned by the countries.dev dataset — around 250. UNESCO World Heritage entries
+    are currently curated for a subset of countries and are being expanded.
+  </p>
+
+  <h3>Can I contribute?</h3>
+  <p>
+    Absolutely. Bug reports, feature requests and pull requests are welcome — see
+    <a href="https://github.com/moradzadeh67/country_info_sync/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>.
+  </p>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>
+      <strong>Country Info Sync</strong> — free and open source country information app.<br>
+      Licensed under the <a href="https://opensource.org/licenses/MIT">MIT License</a> ·
+      <a href="https://github.com/moradzadeh67/country_info_sync">Source code</a> ·
+      <a href="https://github.com/moradzadeh67/country_info_sync/releases/latest">Download</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

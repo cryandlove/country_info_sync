@@ -50,3 +50,8 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Signing secrets (never commit these)
+android/key.properties
+*.jks
+*.keystore
